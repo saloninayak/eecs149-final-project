@@ -4,22 +4,38 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
 # Spotify API credentials
-SPOTIFY_CLIENT_ID = "311a28ee5d9c48d0a7794b282d216e90"
-SPOTIFY_CLIENT_SECRET = "33c84ebc7a874a4a80ccb9ebfe712ca0"
-SPOTIFY_REDIRECT_URI = "http://localhost:8888/callback"
+# SPOTIFY_CLIENT_ID = "6447bdc28d8649ed840592a2b268ff7a"
+# SPOTIFY_CLIENT_SECRET = "f6e67c7cbb734c66a9a4b004923bfe59"
+# SPOTIFY_REDIRECT_URI = "http://localhost:8000/callback"
+
+
+# export SPOTIPY_CLIENT_ID='6447bdc28d8649ed840592a2b268ff7a'
+# export SPOTIPY_CLIENT_SECRET='f6e67c7cbb734c66a9a4b004923bfe59'
+# export SPOTIPY_REDIRECT_URI='http://localhost:8888/callback'
+
+scope = "user-modify-playback-state user-read-playback-state"
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+
+
+# results = sp.current_user_saved_tracks()
+# for idx, item in enumerate(results["items"]):
+# track = item["track"]
+#  print(idx, track["artists"][0]["name"], " – ", track["name"])
+
 
 # Set up Spotify authentication
-sp = spotipy.Spotify(
-    auth_manager=SpotifyOAuth(
-        client_id=SPOTIFY_CLIENT_ID,
-        client_secret=SPOTIFY_CLIENT_SECRET,
-        redirect_uri=SPOTIFY_REDIRECT_URI,
-        scope="user-modify-playback-state user-read-playback-state",
-    )
-)
+# sp = spotipy.Spotify(
+# auth_manager=SpotifyOAuth(
+# client_id=SPOTIFY_CLIENT_ID,
+# client_secret=SPOTIFY_CLIENT_SECRET,
+# redirect_uri=SPOTIFY_REDIRECT_URI,
+#  scope="user-modify-playback-state user-read-playback-state",
+# )
+# )
+
 
 # Playlist for "happy" emotion
-HAPPY_PLAYLIST_URI = "spotify:playlist:6rv8taFNyTz4Zu8VyjBebz"
+HAPPY_PLAYLIST_URI = "spotify:playlist:37i9dQZF1EIgG2NEOhqsD7"
 
 # Load face cascade classifier
 face_cascade = cv2.CascadeClassifier(
@@ -60,7 +76,7 @@ while True:
 
         # If emotion is "happy" and playlist isn't already playing, start the playlist
         if emotion == "happy":
-            sp.start_playback(context_uri=HAPPY_PLAYLIST_URI)
+            sp.start_playback(context_uri=HAPPY_PLAYLIST_URI)  # errors here
             print("Playing happy playlist.")
 
         # Draw rectangle around face and label with predicted emotion
