@@ -1,9 +1,8 @@
 import datetime, threading, time
-import pygame
 import RPi.GPIO as GPIO
 import asyncio
 import atexit
-gpio_pins = [24, 23, 22, 27, 17, 4]
+gpio_pins = [18, 13, 6, 5, 27, 17]
 
 # LED Setup
 GPIO.setmode(GPIO.BCM)
@@ -12,8 +11,6 @@ for pin in gpio_pins:
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, False)
 
-pygame.mixer.init()
-sound = pygame.mixer.Sound("noot.mp3")
 exit_event = threading.Event()
 
 def toggleLEDRow():
@@ -34,14 +31,11 @@ try:
     timerThread = threading.Thread(target=toggleLEDRow)
     #timerThread.daemon = True
     timerThread.start()
-    playing = sound.play()
-    while playing.get_busy():
-        pygame.time.delay(100)
-        print('playing')
 
 except KeyboardInterrupt:
-    pygame.quit()
     for pin in gpio_pins:
         GPIO.output(pin, GPIO.LOW)
+    time.sleep(5)
     GPIO.cleanup()  # Clean up GPIO pins on exit
     exit_event.set()
+    
